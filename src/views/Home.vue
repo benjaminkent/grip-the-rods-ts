@@ -57,41 +57,41 @@ import { nouns } from '../data/nouns'
 
 @Component({})
 export default class Home extends Vue {
-  enteredPlayers: string[] = []
-  adjectives: string[] = []
-  nouns: string[] = []
-  enterNames: boolean = true
-  showCards: boolean = false
-  showCat: boolean = false
-  teamOne: Team = {
+  public enteredPlayers: string[] = []
+  public adjectives: string[] = []
+  public nouns: string[] = []
+  public enterNames: boolean = true
+  public showCards: boolean = false
+  public showCat: boolean = false
+  public teamOne: Team = {
     players: [],
     adjective: '',
     noun: '',
     foosmen: ''
   }
-  teamTwo: Team = {
+  public teamTwo: Team = {
     players: [],
     adjective: '',
     noun: '',
     foosmen: ''
   }
-  foosmen: string[] = ['black', 'yellow']
-  servesFirst: number = 0
+  public foosmen: string[] = ['black', 'yellow']
+  public servesFirst: number = 0
 
-  mounted() {
+  public mounted() {
     this.adjectives = adjectives
     this.nouns = nouns
   }
 
-  shuffle(array: string[]) {
+  public shuffle(array: string[]) {
     for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1))
-      ;[array[i], array[j]] = [array[j], array[i]]
+      const j = Math.floor(Math.random() * (i + 1))
+      ; [array[i], array[j]] = [array[j], array[i]]
     }
     return array
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.enteredPlayers.length !== 4) {
       return
     }
@@ -106,12 +106,12 @@ export default class Home extends Vue {
     this.showCards = true
   }
 
-  setPlayers(): void {
+  public setPlayers(): void {
     this.teamOne.players = this.enteredPlayers.slice(0, 2)
     this.teamTwo.players = this.enteredPlayers.slice(2, 4)
   }
 
-  setAdjectives(): void {
+  public setAdjectives(): void {
     this.teamOne.adjective = this.adjectives[
       Math.floor(Math.random() * this.adjectives.length)
     ]
@@ -120,7 +120,7 @@ export default class Home extends Vue {
     ]
   }
 
-  setNouns(): void {
+  public setNouns(): void {
     this.teamOne.noun = this.nouns[
       Math.floor(Math.random() * this.nouns.length)
     ]
@@ -129,44 +129,44 @@ export default class Home extends Vue {
     ]
   }
 
-  setFoosmen(): void {
+  public setFoosmen(): void {
     this.teamOne.foosmen = this.foosmen[0]
     this.teamTwo.foosmen = this.foosmen[1]
   }
 
-  setServesFirst(): void {
+  public setServesFirst(): void {
     this.servesFirst = Math.floor(Math.random() * 2)
   }
 
-  updatePlayers(): void {
+  public updatePlayers(): void {
     this.enterNames === true
       ? (this.enterNames = false)
       : (this.enterNames = true)
     this.showCards === true ? (this.showCards = false) : (this.showCards = true)
   }
 
-  regenerate(): void {
+  public regenerate(): void {
     this.enteredPlayers = this.teamOne.players.concat(this.teamTwo.players)
     this.onSubmit()
   }
 
-  capitalizePlayerName(player: string): string {
+  public capitalizePlayerName(player: string): string {
     return player.split('')[0].toUpperCase() + player.slice(1)
   }
 
   get normalizeTeamOneName(): string {
-    let noun = this.teamOne.noun
-    let adj = this.teamOne.adjective
-    let normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
-    let normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
+    const noun = this.teamOne.noun
+    const adj = this.teamOne.adjective
+    const normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
+    const normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
     return `${normalAdj} ${normalNoun}`
   }
 
   get normalizeTeamTwoName(): string {
-    let noun = this.teamTwo.noun
-    let adj = this.teamTwo.adjective
-    let normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
-    let normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
+    const noun = this.teamTwo.noun
+    const adj = this.teamTwo.adjective
+    const normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
+    const normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
     return `${normalAdj} ${normalNoun}`
   }
 }
