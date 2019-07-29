@@ -1,5 +1,7 @@
 <template lang="pug">
   .home-container
+    .home-link
+      router-link(to='/') Home
     form(@submit.prevent="onSubmit" v-if="enterNames")
       .input-group
         label(for="player-one") Player 1
@@ -150,6 +152,18 @@ export default class OneOnOne extends Vue {
   flex-direction: column;
   min-width: 100vw;
   color: #222;
+}
+
+.home-link {
+  min-width: 310px;
+  max-width: 375px;
+  margin-top: 10px;
+  a {
+    color: #222;
+  }
+  a:hover {
+    color: #b200ff;
+  }
 }
 
 form {
