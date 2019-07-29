@@ -146,10 +146,27 @@ export default class Home extends Vue {
   regenerate() {
     this.enteredPlayers = this.teamOne.players.concat(this.teamTwo.players)
     this.onSubmit()
+    console.log('ts app')
   }
 
   capitalizePlayerName(player: string) {
     return player.split('')[0].toUpperCase() + player.slice(1)
+  }
+
+  get normalizeTeamOneName() {
+    let noun = this.teamOne.noun
+    let adj = this.teamOne.adjective
+    let normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
+    let normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
+    return `${normalAdj} ${normalNoun}`
+  }
+
+  get normalizeTeamTwoName() {
+    let noun = this.teamTwo.noun
+    let adj = this.teamTwo.adjective
+    let normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
+    let normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
+    return `${normalAdj} ${normalNoun}`
   }
 }
 </script>
