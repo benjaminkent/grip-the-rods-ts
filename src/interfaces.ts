@@ -5,4 +5,11 @@ interface Team {
   foosmen: string
 }
 
-export { Team }
+interface Player {
+  name: string
+  adjective: string
+  noun: string
+  foosmen: string
+}
+
+export { Team, Player }

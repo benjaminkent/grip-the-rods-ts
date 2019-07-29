@@ -3,11 +3,26 @@
     .image-container
       .background-image
         img.background(src="./assets/foos.png" alt="foosball table")
+    AppHeader
     router-view
 </template>
 
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import AppHeader from './components/Header.vue'
+
+@Component({
+  components: {
+    AppHeader
+  }
+})
+export default class App extends Vue {}
+</script>
+
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Righteous|Rock+Salt&display=swap');
+
 body {
   margin: 0;
 }
