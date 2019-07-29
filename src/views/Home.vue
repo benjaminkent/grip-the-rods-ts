@@ -51,6 +51,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Team } from '../interfaces'
+import { shuffle } from 'lodash'
 
 import { adjectives } from '../data/adjectives'
 import { nouns } from '../data/nouns'
@@ -77,26 +78,19 @@ export default class Home extends Vue {
   }
   public foosmen: string[] = ['black', 'yellow']
   public servesFirst: number = 0
+  public strings: string[] = ['one', 'two', 'three', 'four', 'five']
 
   public mounted() {
     this.adjectives = adjectives
     this.nouns = nouns
   }
 
-  public shuffle(array: string[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ; [array[i], array[j]] = [array[j], array[i]]
-    }
-    return array
-  }
-
   public onSubmit(): void {
     if (this.enteredPlayers.length !== 4) {
       return
     }
-    this.shuffle(this.enteredPlayers)
-    this.shuffle(this.foosmen)
+    this.enteredPlayers = shuffle(this.enteredPlayers)
+    this.foosmen = shuffle(this.foosmen)
     this.setPlayers()
     this.setAdjectives()
     this.setNouns()
