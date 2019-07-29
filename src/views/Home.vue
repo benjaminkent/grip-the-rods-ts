@@ -50,30 +50,32 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { Team } from '../interfaces'
+
 import { adjectives } from '../data/adjectives'
 import { nouns } from '../data/nouns'
 
 @Component({})
 export default class Home extends Vue {
-  enteredPlayers = []
+  enteredPlayers: string[] = []
   adjectives: string[] = []
   nouns: string[] = []
-  enterNames = true
-  showCards = false
-  showCat = false
-  teamOne = {
+  enterNames: boolean = true
+  showCards: boolean = false
+  showCat: boolean = false
+  teamOne: Team = {
     players: [],
     adjective: '',
     noun: '',
     foosmen: ''
   }
-  teamTwo = {
+  teamTwo: Team = {
     players: [],
     adjective: '',
     noun: '',
     foosmen: ''
   }
-  foosmen = ['black', 'yellow']
+  foosmen: string[] = ['black', 'yellow']
   servesFirst: number = 0
 
   mounted() {
@@ -89,7 +91,7 @@ export default class Home extends Vue {
     return array
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.enteredPlayers.length !== 4) {
       return
     }
@@ -104,12 +106,12 @@ export default class Home extends Vue {
     this.showCards = true
   }
 
-  setPlayers() {
+  setPlayers(): void {
     this.teamOne.players = this.enteredPlayers.slice(0, 2)
     this.teamTwo.players = this.enteredPlayers.slice(2, 4)
   }
 
-  setAdjectives() {
+  setAdjectives(): void {
     this.teamOne.adjective = this.adjectives[
       Math.floor(Math.random() * this.adjectives.length)
     ]
@@ -118,7 +120,7 @@ export default class Home extends Vue {
     ]
   }
 
-  setNouns() {
+  setNouns(): void {
     this.teamOne.noun = this.nouns[
       Math.floor(Math.random() * this.nouns.length)
     ]
@@ -127,33 +129,32 @@ export default class Home extends Vue {
     ]
   }
 
-  setFoosmen() {
+  setFoosmen(): void {
     this.teamOne.foosmen = this.foosmen[0]
     this.teamTwo.foosmen = this.foosmen[1]
   }
 
-  setServesFirst() {
+  setServesFirst(): void {
     this.servesFirst = Math.floor(Math.random() * 2)
   }
 
-  updatePlayers() {
+  updatePlayers(): void {
     this.enterNames === true
       ? (this.enterNames = false)
       : (this.enterNames = true)
     this.showCards === true ? (this.showCards = false) : (this.showCards = true)
   }
 
-  regenerate() {
+  regenerate(): void {
     this.enteredPlayers = this.teamOne.players.concat(this.teamTwo.players)
     this.onSubmit()
-    console.log('ts app')
   }
 
-  capitalizePlayerName(player: string) {
+  capitalizePlayerName(player: string): string {
     return player.split('')[0].toUpperCase() + player.slice(1)
   }
 
-  get normalizeTeamOneName() {
+  get normalizeTeamOneName(): string {
     let noun = this.teamOne.noun
     let adj = this.teamOne.adjective
     let normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
@@ -161,7 +162,7 @@ export default class Home extends Vue {
     return `${normalAdj} ${normalNoun}`
   }
 
-  get normalizeTeamTwoName() {
+  get normalizeTeamTwoName(): string {
     let noun = this.teamTwo.noun
     let adj = this.teamTwo.adjective
     let normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
