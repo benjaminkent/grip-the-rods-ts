@@ -12,58 +12,53 @@
       button(type="submit") Generate Team Names
     .team-container(v-if="showCards")
       .team(v-if="playerOne.name.length")
-        h2.players {{ playerOne.name }}
-        p.nickname-text Nickname:
-        h2.nickname {{ normalizeTeamOneName }}
-        p.foosmen Playing the {{ playerOne.foosmen }} foosmen
-        p.serve(v-if="servesFirst === 0") Serving First
-        p.serve(v-else) Get ready to defend!
+        Player(:playerAttributes='playerOne')
         .top-line
-        p.players VS.
+        p.versus VS.
         .bottom-line
-        h2.players {{ playerTwo.name }}
-        p.nickname-text Nickname:
-        h2.nickname {{ normalizeTeamTwoName }}
-        p.foosmen Playing the {{ playerTwo.foosmen }} foosmen
-        p.serve(v-if="servesFirst === 1") Serving First
-        p.serve(v-else) Get ready to defend!
-      .buttons-container
-        button.update-players(@click="updatePlayers") Update Players
+        Player(:playerAttributes='playerTwo')
+      .button-container
+        button(@click="updatePlayers") Update Players
     .cat-surprise(v-if="showCat")
       img(src="https://media.giphy.com/media/3oEduQAsYcJKQH2XsI/giphy.gif" alt="cat shooting cucumbers")
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Player } from '../interfaces'
+import { PlayerInterface } from '../interfaces'
 import { shuffle } from 'lodash'
+import Player from '../components/Player.vue'
 
 import { adjectives } from '../data/adjectives'
 import { nouns } from '../data/nouns'
 
-@Component({})
+@Component({
+  components: {
+    Player
+  }
+})
 export default class OneOnOne extends Vue {
   public enteredPlayers: string[] = []
   public adjectives: string[] = []
   public nouns: string[] = []
   public enterNames: boolean = true
   public showCards: boolean = false
-  public showCat: boolean = false
-  public playerOne: Player = {
+  public playerOne: PlayerInterface = {
     name: '',
     adjective: '',
     noun: '',
-    foosmen: ''
+    foosmen: '',
+    servingFirst: false
   }
-  public playerTwo: Player = {
+  public playerTwo: PlayerInterface = {
     name: '',
     adjective: '',
     noun: '',
-    foosmen: ''
+    foosmen: '',
+    servingFirst: false
   }
   public foosmen: string[] = ['black', 'yellow']
   public servesFirst: number = 0
-  public strings: string[] = ['one', 'two', 'three', 'four', 'five']
 
   public mounted() {
     this.adjectives = adjectives
@@ -114,6 +109,13 @@ export default class OneOnOne extends Vue {
 
   public setServesFirst(): void {
     this.servesFirst = Math.floor(Math.random() * 2)
+    if (this.servesFirst === 0) {
+      this.playerOne.servingFirst = true
+      this.playerTwo.servingFirst = false
+    } else {
+      this.playerOne.servingFirst = false
+      this.playerTwo.servingFirst = true
+    }
   }
 
   public updatePlayers(): void {
@@ -125,22 +127,6 @@ export default class OneOnOne extends Vue {
 
   public capitalizePlayerName(player: string): string {
     return player.split('')[0].toUpperCase() + player.slice(1)
-  }
-
-  get normalizeTeamOneName(): string {
-    const noun = this.playerOne.noun
-    const adj = this.playerOne.adjective
-    const normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
-    const normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
-    return `${normalAdj} ${normalNoun}`
-  }
-
-  get normalizeTeamTwoName(): string {
-    const noun = this.playerTwo.noun
-    const adj = this.playerTwo.adjective
-    const normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
-    const normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
-    return `${normalAdj} ${normalNoun}`
   }
 }
 </script>
@@ -199,43 +185,13 @@ form {
       width: 70px;
       margin: 10px 0;
     }
-
-    h2 {
-      margin: 0;
-      text-transform: capitalize;
-      font-size: 20px;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    .players {
-      margin: 0;
-      font-size: 16px;
-      text-transform: capitalize;
-      font-family: 'Rock Salt', cursive;
-    }
-
-    .team-setup {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
   }
 }
-
-.serve {
-  font-size: 14px;
-}
-
-.nickname-text {
-  font-size: 14px;
-}
-
-.foosmen {
-  font-size: 14px;
-  margin: 3px 0;
+.versus {
+  margin: 0;
+  font-size: 16px;
+  text-transform: capitalize;
+  font-family: 'Rock Salt', cursive;
 }
 
 .input-group {
@@ -269,7 +225,7 @@ button:hover {
   border: 1px solid #490068;
 }
 
-.buttons-container {
+.button-container {
   margin-top: 10px;
 }
 
