@@ -1,5 +1,5 @@
 <template lang="pug">
-  .home-container
+  .two-v-container
     .home-link
       router-link(to='/') Home
     form(@submit.prevent="onSubmit" v-if="enterNames")
@@ -144,11 +144,10 @@ export default class TwoOnTwo extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.home-container {
+.two-v-container {
   display: flex;
   align-items: center;
   flex-direction: column;
-  min-width: 100vw;
   color: #222;
 }
 

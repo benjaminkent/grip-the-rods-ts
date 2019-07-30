@@ -1,5 +1,5 @@
 <template lang="pug">
-  .home-container
+  .one-v-container
     .home-link
       router-link(to='/') Home
     form(@submit.prevent="onSubmit" v-if="enterNames")
@@ -132,11 +132,10 @@ export default class OneOnOne extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.home-container {
+.one-v-container {
   display: flex;
   align-items: center;
   flex-direction: column;
-  min-width: 100vw;
   color: #222;
 }
 
