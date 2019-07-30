@@ -1,8 +1,9 @@
-interface Team {
+interface TeamInterface {
   players: string[]
   adjective: string
   noun: string
   foosmen: string
+  servingFirst: boolean
 }
 
 interface PlayerInterface {
@@ -13,4 +14,4 @@ interface PlayerInterface {
   servingFirst: boolean
 }
 
-export { Team, PlayerInterface }
+export { TeamInterface, PlayerInterface }

@@ -17,26 +17,10 @@
         input(type="text" id="player-four" v-model="enteredPlayers[3]")
       button(type="submit") Generate Team Names
     .team-container(v-if="showCards")
-      .team(v-if="teamOne.players.length")
-        h2 team {{ normalizeTeamOneName }}
-        .top-line
-        p.players {{ teamOne.players[0] }} & {{ teamOne.players[1] }}
-        .bottom-line
-        .team-setup
-          p.serve(v-if="servesFirst === 0") {{ normalizeTeamOneName }} gets first serve
-          p.serve(v-else) Get ready to defend!
-          p.foosmen Playing the {{ teamOne.foosmen }} foosmen
-          p.offordef {{ capitalizePlayerName(teamOne.players[0]) }} on Offense, {{ capitalizePlayerName(teamOne.players[1]) }} on Defense
-      .team(v-if="teamTwo.players.length")
-        h2 team {{ teamTwo.adjective }} {{ teamTwo.noun }}
-        .top-line
-        p.players {{ teamTwo.players[0] }} & {{ teamTwo.players[1] }}
-        .bottom-line
-        .team-setup
-          p.serve(v-if="servesFirst === 1") {{ normalizeTeamTwoName }} gets first serve
-          p.serve(v-else) Get ready to defend!
-          p.foosmen Playing the {{ teamTwo.foosmen }} foosmen
-          p.offordef {{ capitalizePlayerName(teamTwo.players[0]) }} on Offense, {{ capitalizePlayerName(teamTwo.players[1]) }} on Defense
+      .team
+        Team(:teamData='teamOne')
+      .team
+        Team(:teamData='teamTwo')
       .buttons-container
         button(@click="regenerate") Regenerate Teams
         button.update-players(@click="updatePlayers") Update Players
@@ -46,13 +30,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Team } from '../interfaces'
+import { TeamInterface } from '../interfaces'
 import { shuffle } from 'lodash'
+import Team from '../components/Team.vue'
 
 import { adjectives } from '../data/adjectives'
 import { nouns } from '../data/nouns'
 
-@Component({})
+@Component({
+  components: {
+    Team
+  }
+})
 export default class TwoOnTwo extends Vue {
   public enteredPlayers: string[] = []
   public adjectives: string[] = []
@@ -60,17 +49,19 @@ export default class TwoOnTwo extends Vue {
   public enterNames: boolean = true
   public showCards: boolean = false
   public showCat: boolean = false
-  public teamOne: Team = {
+  public teamOne: TeamInterface = {
     players: [],
     adjective: '',
     noun: '',
-    foosmen: ''
+    foosmen: '',
+    servingFirst: false
   }
-  public teamTwo: Team = {
+  public teamTwo: TeamInterface = {
     players: [],
     adjective: '',
     noun: '',
-    foosmen: ''
+    foosmen: '',
+    servingFirst: false
   }
   public foosmen: string[] = ['black', 'yellow']
   public servesFirst: number = 0
@@ -82,7 +73,10 @@ export default class TwoOnTwo extends Vue {
   }
 
   public onSubmit(): void {
-    if (this.enteredPlayers.length !== 4) {
+    if (
+      this.enteredPlayers.length !== 4 ||
+      this.enteredPlayers.includes('') === true
+    ) {
       return
     }
     this.enteredPlayers = shuffle(this.enteredPlayers)
@@ -126,6 +120,13 @@ export default class TwoOnTwo extends Vue {
 
   public setServesFirst(): void {
     this.servesFirst = Math.floor(Math.random() * 2)
+    if (this.servesFirst === 0) {
+      this.teamOne.servingFirst = true
+      this.teamTwo.servingFirst = false
+    } else {
+      this.teamOne.servingFirst = false
+      this.teamTwo.servingFirst = true
+    }
   }
 
   public updatePlayers(): void {
@@ -138,26 +139,6 @@ export default class TwoOnTwo extends Vue {
   public regenerate(): void {
     this.enteredPlayers = this.teamOne.players.concat(this.teamTwo.players)
     this.onSubmit()
-  }
-
-  public capitalizePlayerName(player: string): string {
-    return player.split('')[0].toUpperCase() + player.slice(1)
-  }
-
-  get normalizeTeamOneName(): string {
-    const noun = this.teamOne.noun
-    const adj = this.teamOne.adjective
-    const normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
-    const normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
-    return `${normalAdj} ${normalNoun}`
-  }
-
-  get normalizeTeamTwoName(): string {
-    const noun = this.teamTwo.noun
-    const adj = this.teamTwo.adjective
-    const normalNoun = noun.charAt(0).toUpperCase() + noun.slice(1)
-    const normalAdj = adj.charAt(0).toUpperCase() + adj.slice(1)
-    return `${normalAdj} ${normalNoun}`
   }
 }
 </script>

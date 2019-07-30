@@ -31,10 +31,10 @@ export default class App extends Vue {}
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #222;
-  min-height: 88vh;
+  min-height: 100vh;
   display: block;
   position: relative;
-  padding-bottom: 120px;
+  padding-bottom: 80px;
 }
 body,
 html {
