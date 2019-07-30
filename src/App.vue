@@ -5,15 +5,18 @@
         img.background(src="./assets/foos.png" alt="foosball table")
     AppHeader
     router-view
+    AppFooter
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import AppHeader from './components/Header.vue'
+import AppFooter from './components/Footer.vue'
 
 @Component({
   components: {
-    AppHeader
+    AppHeader,
+    AppFooter
   }
 })
 export default class App extends Vue {}
@@ -23,14 +26,21 @@ export default class App extends Vue {}
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Righteous|Rock+Salt&display=swap');
 
-body {
-  margin: 0;
-}
-
 .app-container {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   color: #222;
-  min-height: 100vh;
+  min-height: 88vh;
+  display: block;
+  position: relative;
+  padding-bottom: 120px;
+}
+body,
+html {
+  margin: 0;
+  height: 100%;
+  position: relative;
 }
 
 .background-image {
