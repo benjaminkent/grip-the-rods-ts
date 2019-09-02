@@ -61,10 +61,4 @@ html {
     height: 300px;
   }
 }
-
-@media (min-width: 1000px) {
-  .background {
-    height: 800px;
-  }
-}
 </style>
